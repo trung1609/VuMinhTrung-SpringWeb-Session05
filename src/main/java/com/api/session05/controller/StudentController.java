@@ -5,6 +5,7 @@ import com.api.session05.model.dto.response.ApiResponse;
 import com.api.session05.model.dto.response.student_response.StudentResponse;
 import com.api.session05.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,24 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<StudentResponse>>> getAllStudents(){
+    public ResponseEntity<ApiResponse<Page<StudentResponse>>> getAllStudents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
+    ){
         try {
-            return new ResponseEntity<>(new ApiResponse<>("Get all students successfully", true, studentService.getAllStudent()), HttpStatus.OK);
+            return new ResponseEntity<>(
+                    new ApiResponse<>(
+                            "Get all students successfully",
+                            true,
+                            studentService.getAllStudent(page, size, sortBy, direction)),
+                    HttpStatus.OK);
         }catch (RuntimeException e){
             return new ResponseEntity<>(new ApiResponse<>(e.getMessage(), false, null), HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @GetMapping("{id}")
     public ResponseEntity<ApiResponse<StudentResponse>> getStudentById(@PathVariable Long id){

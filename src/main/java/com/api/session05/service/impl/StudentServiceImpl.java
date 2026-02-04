@@ -8,6 +8,10 @@ import com.api.session05.model.entity.Student;
 import com.api.session05.repository.StudentRepository;
 import com.api.session05.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +31,15 @@ public class StudentServiceImpl implements StudentService {
         return student.stream()
                 .map(studentMapper::toDTO)
                 .toList();
+    }
+
+    @Override
+    public Page<StudentResponse> getAllStudent(int page, int size, String sortBy, String direction) {
+        Sort.Direction sortDir = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sort = Sort.by(sortDir, sortBy);
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return studentRepository.findAll(pageable).map(studentMapper::toDTO);
     }
 
     @Override
