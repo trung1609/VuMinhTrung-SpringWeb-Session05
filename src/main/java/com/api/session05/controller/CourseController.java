@@ -1,5 +1,6 @@
 package com.api.session05.controller;
 
+import com.api.session05.model.dto.request.PageRequestDTO;
 import com.api.session05.model.dto.request.course_request.CourseCreateRequest;
 import com.api.session05.model.dto.request.course_request.CourseUpdateDTORequest;
 import com.api.session05.model.dto.response.ApiResponse;
@@ -22,12 +23,9 @@ public class CourseController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<Page<CourseResponse>>> getAllCourses(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "ASC") String direction) {
+            @ModelAttribute PageRequestDTO requestDTO) {
         try {
-            Page<CourseResponse> coursePage = courseService.getAllCourse(page, size, sortBy, direction);
+            Page<CourseResponse> coursePage = courseService.getAllCourse(requestDTO);
             return new ResponseEntity<>(
                     new ApiResponse<>("Get all courses successfully", true, coursePage),
                     HttpStatus.OK

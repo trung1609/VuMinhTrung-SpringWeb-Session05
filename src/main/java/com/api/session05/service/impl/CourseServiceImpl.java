@@ -2,6 +2,7 @@ package com.api.session05.service.impl;
 
 
 import com.api.session05.mapper.CourseMapper;
+import com.api.session05.model.dto.request.PageRequestDTO;
 import com.api.session05.model.dto.request.course_request.CourseCreateRequest;
 import com.api.session05.model.dto.request.course_request.CourseUpdateDTORequest;
 import com.api.session05.model.dto.response.course_response.CourseResponse;
@@ -40,10 +41,23 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<CourseResponse> getAllCourse(int page, int size, String sortBy, String direction) {
-        Sort.Direction sortDir = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
-        Sort sort = Sort.by(sortDir, sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
+    public Page<CourseResponse> getAllCourse(PageRequestDTO request) {
+        if (request.getSortBy() == null || request.getSortBy().isBlank()) {
+            request.setSortBy("id");
+        }
+
+        if (request.getDirection() == null || request.getDirection().isBlank()) {
+            request.setDirection("asc");
+        }
+
+        if (request.getPage() < 0) {
+            request.setPage(0);
+        }
+        if (request.getSize() < 0) {
+            request.setSize(5);
+        }
+
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.ASC, "id"));
         return courseRepository.findAll(pageable).map(courseMapper::toDto);
     }
 

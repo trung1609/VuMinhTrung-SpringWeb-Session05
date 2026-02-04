@@ -1,5 +1,6 @@
 package com.api.session05.service;
 
+import com.api.session05.model.dto.request.PageRequestDTO;
 import com.api.session05.model.dto.request.course_request.CourseCreateRequest;
 import com.api.session05.model.dto.request.course_request.CourseUpdateDTORequest;
 import com.api.session05.model.dto.response.course_response.CourseResponse;
@@ -12,7 +13,7 @@ public interface CourseService {
 
     List<CourseResponse> getAllCourse();
 
-    Page<CourseResponse> getAllCourse(int page, int size, String sortBy, String direction);
+    Page<CourseResponse> getAllCourse(PageRequestDTO request);
 
     CourseResponse getCourseById(Long id);
 
