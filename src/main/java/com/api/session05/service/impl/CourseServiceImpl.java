@@ -163,12 +163,36 @@ public class CourseServiceImpl implements CourseService {
             request.setSize(5);
         }
 
-        if (courseStatus == null){
-            courseStatus = CourseStatus.active;
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
+        Page<CourseResponseV2> page = courseRepository.findAllByStatusV2(courseStatus, pageable);
+        return pageMapper.mapPageToDTO(page);
+    }
+
+    @Override
+    public PageResponseDTO<CourseResponseV2> searchCourseByTitle(String title, PageRequestDTO request) {
+        Sort sort;
+
+        if (request.getSortBy() == null || request.getSortBy().isBlank()) {
+            sort = Sort.unsorted();
+        }else {
+            sort = Sort.by(request.getSortBy());
+        }
+
+        if (request.getDirection() == null || request.getDirection().isBlank()) {
+            sort = sort.ascending();
+        }else {
+            sort = sort.descending();
+        }
+
+        if(request.getPage() == null) {
+            request.setPage(0);
+        }
+        if (request.getSize() == null) {
+            request.setSize(5);
         }
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
-        Page<CourseResponseV2> page = courseRepository.findAllByStatusV2(courseStatus, pageable);
+        Page<CourseResponseV2> page = courseRepository.findAllByCourseTitle(title, pageable);
         return pageMapper.mapPageToDTO(page);
     }
 }

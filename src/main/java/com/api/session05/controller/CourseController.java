@@ -116,7 +116,7 @@ public class CourseController {
     @GetMapping("/v2/status")
     public ResponseEntity<ApiResponse<PageResponseDTO<CourseResponseV2>>> findAllCourseByStatusV2(
             @ModelAttribute PageRequestDTO requestDTO,
-            @RequestParam(defaultValue = "active") CourseStatus status) {
+            @RequestParam(required = false) CourseStatus status) {
         return new ResponseEntity<>(
                 new ApiResponse<>(
                         "Get course by status successfully",
@@ -126,6 +126,22 @@ public class CourseController {
                 HttpStatus.OK
         );
     }
+
+    @GetMapping("/title")
+    public ResponseEntity<ApiResponse<PageResponseDTO<CourseResponseV2>>> searchCourseByTitle(
+            @ModelAttribute PageRequestDTO requestDTO,
+            @RequestParam(required = false) String title
+    ){
+        return new ResponseEntity<>(
+                new ApiResponse<>(
+                        "Get course by title successfully",
+                        true,
+                        courseService.searchCourseByTitle(title, requestDTO)
+                ),
+                HttpStatus.OK
+        );
+    }
+
 
 
 }

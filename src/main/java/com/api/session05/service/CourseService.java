@@ -29,4 +29,6 @@ public interface CourseService {
     PageResponseDTO<CourseResponse> findAllByCourseStatus(CourseStatus courseStatus, PageRequestDTO request);
 
     PageResponseDTO<CourseResponseV2> findAllByCourseStatusV2(CourseStatus courseStatus, PageRequestDTO request);
+
+    PageResponseDTO<CourseResponseV2> searchCourseByTitle(String title, PageRequestDTO request);
 }
