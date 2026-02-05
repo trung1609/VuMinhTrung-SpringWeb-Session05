@@ -82,4 +82,15 @@ public class StudentController {
     public ResponseEntity<ApiResponse<List<StudentResponse>>> findAllStudentByCourseTitle(@RequestParam String courseTitle){
         return new ResponseEntity<>(new ApiResponse<>("Find students by course title successfully", true, studentService.findAllStudentByCourseTitle(courseTitle)), HttpStatus.OK);
     }
+
+    @GetMapping("name")
+    public ResponseEntity<ApiResponse<PageResponseDTO<StudentResponse>>> searchStudentByName(
+            @RequestParam(required = false) String studentName,
+            @ModelAttribute PageRequestDTO requestDTO){
+        return new ResponseEntity<>(new ApiResponse<>(
+                "Search student by name successfully",
+                true,
+                studentService.searchStudentByName(studentName, requestDTO)),
+                HttpStatus.OK);
+    }
 }

@@ -22,4 +22,6 @@ public interface StudentService {
     void deleteById(Long id);
 
     List<StudentResponse> findAllStudentByCourseTitle(String courseTitle);
+
+    PageResponseDTO<StudentResponse> searchStudentByName(String name, PageRequestDTO request);
 }

@@ -179,9 +179,9 @@ public class CourseServiceImpl implements CourseService {
         }
 
         if (request.getDirection() == null || request.getDirection().isBlank()) {
-            sort = sort.ascending();
+            sort = Sort.unsorted();
         }else {
-            sort = sort.descending();
+            sort = Sort.by(request.getDirection());
         }
 
         if(request.getPage() == null) {

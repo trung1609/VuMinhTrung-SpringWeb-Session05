@@ -96,4 +96,35 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentResponse> findAllStudentByCourseTitle(String courseTitle) {
         return studentRepository.findAllStudentByCourseTitle(courseTitle);
     }
+
+    @Override
+    public PageResponseDTO<StudentResponse> searchStudentByName(String name, PageRequestDTO request) {
+        Sort sort;
+
+        if (request.getSortBy() == null || request.getSortBy().isBlank()){
+            sort = Sort.unsorted();
+        }else{
+            sort = Sort.by(request.getSortBy());
+        }
+
+        if (request.getDirection() == null || request.getDirection().isBlank()){
+            sort = Sort.unsorted();
+        }else{
+            sort = Sort.by(request.getDirection());
+        }
+
+        if(request.getPage() == null){
+            request.setPage(0);
+        }
+
+        if(request.getSize() == null){
+            request.setSize(5);
+        }
+
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
+        Page<StudentResponse> page = studentRepository.searchStudentByName(name, pageable);
+        return pageMapper.mapPageToDTO(page);
+    }
+
+
 }
