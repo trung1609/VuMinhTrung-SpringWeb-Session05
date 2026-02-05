@@ -6,6 +6,7 @@ import com.api.session05.model.dto.request.course_request.CourseUpdateDTORequest
 import com.api.session05.model.dto.response.ApiResponse;
 import com.api.session05.model.dto.response.PageResponseDTO;
 import com.api.session05.model.dto.response.course_response.CourseResponse;
+import com.api.session05.model.dto.response.course_response.CourseResponseV2;
 import com.api.session05.model.entity.CourseStatus;
 import com.api.session05.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +108,20 @@ public class CourseController {
                         "Get course by status successfully",
                         true,
                         courseService.findAllByCourseStatus(status, requestDTO)
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/v2/status")
+    public ResponseEntity<ApiResponse<PageResponseDTO<CourseResponseV2>>> findAllCourseByStatusV2(
+            @ModelAttribute PageRequestDTO requestDTO,
+            @RequestParam(defaultValue = "active") CourseStatus status) {
+        return new ResponseEntity<>(
+                new ApiResponse<>(
+                        "Get course by status successfully",
+                        true,
+                        courseService.findAllByCourseStatusV2(status, requestDTO)
                 ),
                 HttpStatus.OK
         );

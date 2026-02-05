@@ -8,6 +8,7 @@ import com.api.session05.model.dto.request.course_request.CourseCreateRequest;
 import com.api.session05.model.dto.request.course_request.CourseUpdateDTORequest;
 import com.api.session05.model.dto.response.PageResponseDTO;
 import com.api.session05.model.dto.response.course_response.CourseResponse;
+import com.api.session05.model.dto.response.course_response.CourseResponseV2;
 import com.api.session05.model.entity.Course;
 import com.api.session05.model.entity.CourseStatus;
 import com.api.session05.repository.CourseRepository;
@@ -137,6 +138,37 @@ public class CourseServiceImpl implements CourseService {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
         Page<CourseResponse> page = courseRepository.findAllByStatus(courseStatus, pageable);
+        return pageMapper.mapPageToDTO(page);
+    }
+
+    @Override
+    public PageResponseDTO<CourseResponseV2> findAllByCourseStatusV2(CourseStatus courseStatus, PageRequestDTO request) {
+        Sort sort;
+        if (request.getSortBy() == null || request.getSortBy().isBlank()){
+            sort = Sort.by( "id");
+        }else {
+            sort = Sort.by(request.getSortBy());
+        }
+
+        if (request.getDirection() == null || request.getDirection().isBlank()){
+            sort = sort.ascending();
+        }else {
+            sort = sort.descending();
+        }
+
+        if(request.getPage() == null){
+            request.setPage(0);
+        }
+        if (request.getSize() == null){
+            request.setSize(5);
+        }
+
+        if (courseStatus == null){
+            courseStatus = CourseStatus.active;
+        }
+
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
+        Page<CourseResponseV2> page = courseRepository.findAllByStatusV2(courseStatus, pageable);
         return pageMapper.mapPageToDTO(page);
     }
 }

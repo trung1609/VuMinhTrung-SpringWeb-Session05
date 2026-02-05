@@ -2,6 +2,7 @@ package com.api.session05.repository;
 
 
 import com.api.session05.model.dto.response.course_response.CourseResponse;
+import com.api.session05.model.dto.response.course_response.CourseResponseV2;
 import com.api.session05.model.entity.Course;
 import com.api.session05.model.entity.CourseStatus;
 import org.springframework.data.domain.Page;
@@ -24,4 +25,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @Query("select new com.api.session05.model.dto.response.course_response.CourseResponse(c.title, c.instructor.name, c.status) from Course c where c.status = :status")
     Page<CourseResponse> findAllByStatus(@Param("status") CourseStatus status, Pageable pageable);
+
+    @Query("select new com.api.session05.model.dto.response.course_response.CourseResponseV2(c.id, c.title ,c.status) from Course c where c.status = :status")
+    Page<CourseResponseV2> findAllByStatusV2(CourseStatus status, Pageable pageable);
 }

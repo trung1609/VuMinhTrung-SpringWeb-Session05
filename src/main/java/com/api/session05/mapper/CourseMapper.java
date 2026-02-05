@@ -4,6 +4,7 @@ import com.api.session05.model.dto.request.course_request.CourseCreateRequest;
 import com.api.session05.model.dto.request.course_request.CourseUpdateDTORequest;
 import com.api.session05.model.dto.response.course_response.CourseInstructorResponse;
 import com.api.session05.model.dto.response.course_response.CourseResponse;
+import com.api.session05.model.dto.response.course_response.CourseResponseV2;
 import com.api.session05.model.dto.response.student_response.StudentResponse;
 import com.api.session05.model.entity.Course;
 import com.api.session05.model.entity.Instructor;
@@ -33,6 +34,10 @@ public class CourseMapper {
                     .toList());
         }
         return response;
+    }
+
+    public CourseResponseV2 toDtoV2(Course course) {
+        return modelMapper.map(course, CourseResponseV2.class);
     }
 
     public Course toEntity(CourseCreateRequest request) {
