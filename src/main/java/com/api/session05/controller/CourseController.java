@@ -99,12 +99,14 @@ public class CourseController {
     }
 
     @GetMapping("/status")
-    public ResponseEntity<ApiResponse<List<CourseResponse>>> findAllCourseByStatus(@RequestParam CourseStatus status) {
+    public ResponseEntity<ApiResponse<PageResponseDTO<CourseResponse>>> findAllCourseByStatus(
+            @ModelAttribute PageRequestDTO requestDTO,
+            @RequestParam(defaultValue = "active") CourseStatus status) {
         return new ResponseEntity<>(
                 new ApiResponse<>(
                         "Get course by status successfully",
                         true,
-                        courseService.findAllByCourseStatus(status)
+                        courseService.findAllByCourseStatus(status, requestDTO)
                 ),
                 HttpStatus.OK
         );

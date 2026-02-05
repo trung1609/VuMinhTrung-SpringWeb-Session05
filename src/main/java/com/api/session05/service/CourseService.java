@@ -26,5 +26,5 @@ public interface CourseService {
 
     List<CourseResponse> findCourseByInstructorName(String instructorName);
 
-    List<CourseResponse> findAllByCourseStatus(CourseStatus courseStatus);
+    PageResponseDTO<CourseResponse> findAllByCourseStatus(CourseStatus courseStatus, PageRequestDTO request);
 }
