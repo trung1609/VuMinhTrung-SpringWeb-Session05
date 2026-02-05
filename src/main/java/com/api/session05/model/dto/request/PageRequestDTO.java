@@ -10,8 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PageRequestDTO {
-    private int page;
-    private int size;
+    private Integer page;
+    private Integer size;
     private String sortBy;
     private String direction;
 }

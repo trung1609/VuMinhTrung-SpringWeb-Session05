@@ -42,22 +42,27 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Page<CourseResponse> getAllCourse(PageRequestDTO request) {
-        if (request.getSortBy() == null || request.getSortBy().isBlank()) {
-            request.setSortBy("id");
+        Sort sort;
+        if (request.getSortBy() == null || request.getSortBy().isBlank()){
+            sort = Sort.by( "id");
+        }else {
+            sort = Sort.by(request.getSortBy());
         }
 
-        if (request.getDirection() == null || request.getDirection().isBlank()) {
-            request.setDirection("asc");
+        if (request.getDirection() == null || request.getDirection().isBlank()){
+            sort = sort.ascending();
+        }else {
+            sort = sort.descending();
         }
 
-        if (request.getPage() < 0) {
+        if(request.getPage() == null){
             request.setPage(0);
         }
-        if (request.getSize() < 0) {
+        if (request.getSize() == null){
             request.setSize(5);
         }
 
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Direction.ASC, "id"));
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
         return courseRepository.findAll(pageable).map(courseMapper::toDto);
     }
 
