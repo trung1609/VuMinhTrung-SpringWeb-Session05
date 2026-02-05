@@ -2,6 +2,7 @@ package com.api.session05.service.impl;
 
 
 import com.api.session05.mapper.CourseMapper;
+import com.api.session05.mapper.PageMapper;
 import com.api.session05.model.dto.request.PageRequestDTO;
 import com.api.session05.model.dto.request.course_request.CourseCreateRequest;
 import com.api.session05.model.dto.request.course_request.CourseUpdateDTORequest;
@@ -32,6 +33,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseMapper courseMapper;
+
+    @Autowired
+    private PageMapper pageMapper;
 
 
     @Override
@@ -66,12 +70,7 @@ public class CourseServiceImpl implements CourseService {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
         Page<CourseResponse> page = courseRepository.findAll(pageable).map(courseMapper::toDto);
-        return new PageResponseDTO<>(page.getContent(),
-                page.getNumber(),
-                page.getSize(),
-                page.getTotalElements(),
-                page.getTotalPages(),
-                page.isLast());
+        return pageMapper.mapPageToDTO(page);
     }
 
     @Override

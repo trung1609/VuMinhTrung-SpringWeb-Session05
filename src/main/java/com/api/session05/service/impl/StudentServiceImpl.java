@@ -1,6 +1,7 @@
 package com.api.session05.service.impl;
 
 
+import com.api.session05.mapper.PageMapper;
 import com.api.session05.mapper.StudentMapper;
 import com.api.session05.model.dto.request.PageRequestDTO;
 import com.api.session05.model.dto.request.student_request.StudentRequest;
@@ -26,6 +27,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentMapper studentMapper;
+
+    @Autowired
+    private PageMapper pageMapper;
 
     @Override
     public List<StudentResponse> getAllStudent() {
@@ -59,14 +63,7 @@ public class StudentServiceImpl implements StudentService {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
         Page<StudentResponse> page = studentRepository.findAll(pageable).map(studentMapper::toDTO);
-        return new PageResponseDTO<>(
-                page.getContent(),
-                page.getNumber(),
-                page.getSize(),
-                page.getTotalElements(),
-                page.getTotalPages(),
-                page.isLast()
-        );
+        return pageMapper.mapPageToDTO(page);
     }
 
     @Override
