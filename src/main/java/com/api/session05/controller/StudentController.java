@@ -1,7 +1,9 @@
 package com.api.session05.controller;
 
+import com.api.session05.model.dto.request.PageRequestDTO;
 import com.api.session05.model.dto.request.student_request.StudentRequest;
 import com.api.session05.model.dto.response.ApiResponse;
+import com.api.session05.model.dto.response.PageResponseDTO;
 import com.api.session05.model.dto.response.student_response.StudentResponse;
 import com.api.session05.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +22,15 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<StudentResponse>>> getAllStudents(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String direction
-    ){
+    public ResponseEntity<ApiResponse<PageResponseDTO<StudentResponse>>> getAllStudents(
+            @ModelAttribute PageRequestDTO requestDTO
+            ){
         try {
             return new ResponseEntity<>(
                     new ApiResponse<>(
                             "Get all students successfully",
                             true,
-                            studentService.getAllStudent(page, size, sortBy, direction)),
+                            studentService.getAllStudent(requestDTO)),
                     HttpStatus.OK);
         }catch (RuntimeException e){
             return new ResponseEntity<>(new ApiResponse<>(e.getMessage(), false, null), HttpStatus.BAD_REQUEST);

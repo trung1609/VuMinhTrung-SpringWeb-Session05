@@ -5,6 +5,7 @@ import com.api.session05.mapper.CourseMapper;
 import com.api.session05.model.dto.request.PageRequestDTO;
 import com.api.session05.model.dto.request.course_request.CourseCreateRequest;
 import com.api.session05.model.dto.request.course_request.CourseUpdateDTORequest;
+import com.api.session05.model.dto.response.PageResponseDTO;
 import com.api.session05.model.dto.response.course_response.CourseResponse;
 import com.api.session05.model.entity.Course;
 import com.api.session05.model.entity.CourseStatus;
@@ -32,6 +33,7 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseMapper courseMapper;
 
+
     @Override
     public List<CourseResponse> getAllCourse() {
         List<Course> courses = courseRepository.findAll();
@@ -41,7 +43,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<CourseResponse> getAllCourse(PageRequestDTO request) {
+    public PageResponseDTO<CourseResponse> getAllCourse(PageRequestDTO request) {
         Sort sort;
         if (request.getSortBy() == null || request.getSortBy().isBlank()){
             sort = Sort.by( "id");
@@ -63,7 +65,13 @@ public class CourseServiceImpl implements CourseService {
         }
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
-        return courseRepository.findAll(pageable).map(courseMapper::toDto);
+        Page<CourseResponse> page = courseRepository.findAll(pageable).map(courseMapper::toDto);
+        return new PageResponseDTO<>(page.getContent(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isLast());
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.api.session05.service;
 import com.api.session05.model.dto.request.PageRequestDTO;
 import com.api.session05.model.dto.request.course_request.CourseCreateRequest;
 import com.api.session05.model.dto.request.course_request.CourseUpdateDTORequest;
+import com.api.session05.model.dto.response.PageResponseDTO;
 import com.api.session05.model.dto.response.course_response.CourseResponse;
 import com.api.session05.model.entity.CourseStatus;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,7 @@ public interface CourseService {
 
     List<CourseResponse> getAllCourse();
 
-    Page<CourseResponse> getAllCourse(PageRequestDTO request);
+    PageResponseDTO<CourseResponse> getAllCourse(PageRequestDTO request);
 
     CourseResponse getCourseById(Long id);
 

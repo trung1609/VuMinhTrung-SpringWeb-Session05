@@ -4,11 +4,11 @@ import com.api.session05.model.dto.request.PageRequestDTO;
 import com.api.session05.model.dto.request.course_request.CourseCreateRequest;
 import com.api.session05.model.dto.request.course_request.CourseUpdateDTORequest;
 import com.api.session05.model.dto.response.ApiResponse;
+import com.api.session05.model.dto.response.PageResponseDTO;
 import com.api.session05.model.dto.response.course_response.CourseResponse;
 import com.api.session05.model.entity.CourseStatus;
 import com.api.session05.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +22,10 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<CourseResponse>>> getAllCourses(
+    public ResponseEntity<ApiResponse<PageResponseDTO<CourseResponse>>> getAllCourses(
             @ModelAttribute PageRequestDTO requestDTO) {
         try {
-            Page<CourseResponse> coursePage = courseService.getAllCourse(requestDTO);
+            PageResponseDTO<CourseResponse> coursePage = courseService.getAllCourse(requestDTO);
             return new ResponseEntity<>(
                     new ApiResponse<>("Get all courses successfully", true, coursePage),
                     HttpStatus.OK
